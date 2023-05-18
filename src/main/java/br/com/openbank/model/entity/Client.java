@@ -1,33 +1,20 @@
 package br.com.openbank.model.entity;
 
 import br.com.openbank.model.embedded.Address;
-import br.com.openbank.model.embedded.TypeClient;
-import lombok.Data;
+import br.com.openbank.model.enums.TypeClient;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.UUID;
 
-@Data
+@Getter @Setter
 public class Client {
-    private UUID id;
+
+    private UUID idClient;
     private String cpf;
     private String name;
-    private Date dateOfBirth;
     private TypeClient typeClient;
+    private Date dateOfBirth;
     private Address address;
-    private String password;
-    private Long phoneNumber;
-    private String email;
-
-    public Client(String cpf, String name, Date dateOfBirth, Integer typeClient, Address address, String password, Long phoneNumber, String email){
-        this.id = UUID.randomUUID();
-        this.cpf = cpf;
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.typeClient = TypeClient.getTypeClient(typeClient);
-        this.address = address;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
 }
