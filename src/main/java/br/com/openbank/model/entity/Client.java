@@ -5,6 +5,7 @@ import br.com.openbank.model.enums.TypeClient;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,6 +16,15 @@ public class Client {
     private String cpf;
     private String name;
     private TypeClient typeClient;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private Address address;
+
+    public Client(String cpf, String name, LocalDate dateOfBirth, Address address){
+        this.idClient = UUID.randomUUID();
+        this.cpf = cpf;
+        this.name = name;
+        this.typeClient = TypeClient.COMMON;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+    }
 }

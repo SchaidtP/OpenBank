@@ -7,8 +7,8 @@ import br.com.openbank.model.enums.TypeAccount;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ public class Account {
     private Double balance;
     private Pix pix;
     private TypeAccount typeAccount;
-    private Date dateAccount;
+    private LocalDate dateAccount;
     private List<Card> cards;
 
     public void addCard(Card card){
