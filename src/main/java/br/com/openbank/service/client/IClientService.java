@@ -14,4 +14,5 @@ public interface IClientService {
     Client getClientByCpf(String cpf);
     GetClientResponse getClient();
     void deleteClient() throws Exception;
+    void setTypeClient(Double balance) throws Exception;
 }

@@ -2,6 +2,7 @@ package br.com.openbank.service.client;
 
 import br.com.openbank.model.embedded.Address;
 import br.com.openbank.model.entity.Client;
+import br.com.openbank.model.enums.TypeClient;
 import br.com.openbank.repository.IClientRepository;
 import br.com.openbank.service.client.request.ClientCreateRequest;
 import br.com.openbank.service.account.IAccountService;
@@ -118,10 +119,29 @@ public class ClientService implements IClientService{
         }
     }
 
+    public void setTypeClient(Double balance) throws Exception {
+        var client = ((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        if(balance <= 5000){
+            client.setTypeClient(TypeClient.COMMON);
+        } else if(balance > 5000 && balance <= 10000){
+            client.setTypeClient(TypeClient.PREMIUM);
+        } else {
+            client.setTypeClient(TypeClient.SUPER);
+        }
+
+        try{
+            iClientRepository.save(client);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
     private boolean isOlderThan16(LocalDate dateOfBirth){
         LocalDate currentDate = LocalDate.now();
         Period ageDifference = Period.between(dateOfBirth, currentDate);
         int age = ageDifference.getYears();
         return age > 16;
     }
+
+
 }
