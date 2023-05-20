@@ -12,4 +12,6 @@ public class ClientEditRequest {
     public String city;
     public String state;
     public String password;
+    public String email;
+    public String telephone;
 }

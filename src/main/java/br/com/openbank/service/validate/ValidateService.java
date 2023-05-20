@@ -1,13 +1,15 @@
-package br.com.openbank.service.validate.cpf;
+package br.com.openbank.service.validate;
 
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
-public class CpfValidateService implements ICpfValidateService {
+public class ValidateService implements IValidateService{
     private static final Set<String> INVALID_CPFS = new HashSet<>(Arrays.asList(
             "00000000000", "11111111111", "22222222222", "33333333333", "44444444444",
             "55555555555", "66666666666", "77777777777", "88888888888", "99999999999"
@@ -47,5 +49,13 @@ public class CpfValidateService implements ICpfValidateService {
 
     private String removeSpecialCharacters(String cpf) {
         return cpf.replaceAll("[^0-9]", "");
+    }
+
+    private static final String EMAIL_PATTERN = "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$";
+
+    public boolean validateEmail(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

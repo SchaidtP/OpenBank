@@ -15,4 +15,6 @@ public class ClientCreateRequest {
     public String state;
     public Integer typeAccount;
     public String password;
+    public String email;
+    public String telephone;
 }

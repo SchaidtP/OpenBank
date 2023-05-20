@@ -18,13 +18,17 @@ public class Client {
     private LocalDate dateOfBirth;
     private Address address;
     private String password;
+    private String email;
+    private String telephone;
 
-    public Client(String cpf, String name, LocalDate dateOfBirth, Address address){
+    public Client(String cpf, String name, LocalDate dateOfBirth, Address address, String email, String telephone){
         this.id = UUID.randomUUID();
         this.cpf = cpf;
         this.name = name;
         this.typeClient = TypeClient.COMMON;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
+        this.email = email;
+        this.telephone = telephone;
     }
 }

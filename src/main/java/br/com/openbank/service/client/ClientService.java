@@ -8,7 +8,7 @@ import br.com.openbank.service.client.request.ClientCreateRequest;
 import br.com.openbank.service.account.IAccountService;
 import br.com.openbank.service.client.request.ClientEditRequest;
 import br.com.openbank.service.client.response.GetClientResponse;
-import br.com.openbank.service.validate.cpf.ICpfValidateService;
+import br.com.openbank.service.validate.IValidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,18 +26,18 @@ public class ClientService implements IClientService{
     IClientRepository iClientRepository;
 
     @Autowired
-    ICpfValidateService iCpfValidateService;
+    IValidateService iValidateService;
 
     @Autowired
     IAccountService iAccountService;
 
     public void createClient(ClientCreateRequest clientCreateRequest) throws Exception{
-        if(iClientRepository.findClientByCpf(clientCreateRequest.cpf).isEmpty() && iCpfValidateService.validateCpf(clientCreateRequest.cpf)){
+        if(iClientRepository.findClientByCpf(clientCreateRequest.cpf).isEmpty() && iValidateService.validateCpf(clientCreateRequest.cpf)){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateOfBirth = LocalDate.parse(clientCreateRequest.dateOfBirth, formatter);
-            if(isOlderThan16(dateOfBirth)){
+            if(isOlderThan16(dateOfBirth) && iValidateService.validateEmail(clientCreateRequest.email)){
                 Address address = new Address(clientCreateRequest.street, clientCreateRequest.number, clientCreateRequest.zipCode, clientCreateRequest.neighborhood, clientCreateRequest.city, clientCreateRequest.state);
-                Client client = new Client(clientCreateRequest.cpf, clientCreateRequest.name, dateOfBirth, address);
+                Client client = new Client(clientCreateRequest.cpf, clientCreateRequest.name, dateOfBirth, address, clientCreateRequest.email, clientCreateRequest.telephone);
                 try {
                     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                     client.setPassword(encoder.encode(clientCreateRequest.password));
@@ -48,7 +48,7 @@ public class ClientService implements IClientService{
                     throw new Exception(e.getMessage());
                 }
             }
-            throw new Exception("Invalid age");
+            throw new Exception("Invalid age or email");
         }
         throw new Exception("Customer already registered or invalid CPF");
     }
@@ -86,6 +86,17 @@ public class ClientService implements IClientService{
 
         if(clientEditRequest.password != null && !clientEditRequest.password.equals("")){
             client.getAddress().setStreet(clientEditRequest.password);
+        }
+
+        if(clientEditRequest.email != null && !clientEditRequest.state.equals("")){
+            if (iValidateService.validateEmail(clientEditRequest.email)){
+                client.setEmail(clientEditRequest.email);
+            }
+            throw new Exception("Invalid email");
+        }
+
+        if(clientEditRequest.telephone != null && !clientEditRequest.telephone.equals("")){
+            client.setTelephone(clientEditRequest.telephone);
         }
 
         try{

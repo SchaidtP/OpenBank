@@ -140,4 +140,21 @@ public class AccountService implements IAccountService{
         LocalDate currentDate = LocalDate.now();
         return currentDate.plusMonths(1);
     }
+
+    public Account findAccount(){
+        var client = ((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return iAccountRepository.findAccountByIdClient(client.getId()).orElse(null);
+    }
+
+    public void saveAccount(Account account) throws Exception {
+        try {
+            iAccountRepository.save(account);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<Account> findAll(){
+        return iAccountRepository.findAll();
+    }
 }
