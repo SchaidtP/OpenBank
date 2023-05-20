@@ -1,8 +1,6 @@
-package br.com.openbank.service.validate.client.request;
+package br.com.openbank.service.client.request;
 
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class ClientCreateRequest {
@@ -15,4 +13,6 @@ public class ClientCreateRequest {
     public String neighborhood;
     public String city;
     public String state;
+    public Integer typeAccount;
+    public String password;
 }

@@ -6,21 +6,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter @Setter
 public class Client {
 
-    private UUID idClient;
+    private UUID id;
     private String cpf;
     private String name;
     private TypeClient typeClient;
     private LocalDate dateOfBirth;
     private Address address;
+    private String password;
 
     public Client(String cpf, String name, LocalDate dateOfBirth, Address address){
-        this.idClient = UUID.randomUUID();
+        this.id = UUID.randomUUID();
         this.cpf = cpf;
         this.name = name;
         this.typeClient = TypeClient.COMMON;

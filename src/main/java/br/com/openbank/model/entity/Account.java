@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter @Setter
 public class Account {
-    private UUID idAccount;
+    private UUID id;
     private UUID idClient;
     private Double balance;
     private Pix pix;
@@ -22,10 +22,17 @@ public class Account {
     private LocalDate dateAccount;
     private List<Card> cards;
 
+    public Account(UUID idClient, Double balance, TypeAccount typeAccount, LocalDate dateAccount){
+        this.id = UUID.randomUUID();
+        this.idClient = idClient;
+        this.balance = balance;
+        this.pix = null;
+        this.typeAccount = typeAccount;
+        this.dateAccount = dateAccount;
+        this.cards = new ArrayList<>();
+    }
+
     public void addCard(Card card){
-        if(this.cards == null){
-            this.cards = new ArrayList<Card>();
-        }
         this.cards.add(card);
     }
 
