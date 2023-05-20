@@ -1,5 +1,6 @@
 package br.com.openbank.model.embedded;
 
+import br.com.openbank.model.enums.TypeCard;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ public class CardDebit extends  Card{
     private double limitPerTransaction;
 
     public CardDebit(Double limitPerTransaction){
-        super();
+        super(TypeCard.DEBIT);
         this.limitPerTransaction = limitPerTransaction;
     }
 }

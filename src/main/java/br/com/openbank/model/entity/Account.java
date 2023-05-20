@@ -4,6 +4,7 @@ import br.com.openbank.model.embedded.Card;
 import br.com.openbank.model.embedded.CardCredit;
 import br.com.openbank.model.embedded.Pix;
 import br.com.openbank.model.enums.TypeAccount;
+import br.com.openbank.model.enums.TypeCard;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,14 +23,23 @@ public class Account {
     private LocalDate dateAccount;
     private List<Card> cards;
 
-    public Account(UUID idClient, Double balance, TypeAccount typeAccount, LocalDate dateAccount){
+    public Account(UUID idClient, TypeAccount typeAccount, LocalDate dateAccount){
         this.id = UUID.randomUUID();
         this.idClient = idClient;
-        this.balance = balance;
+        this.balance = 0.0;
         this.pix = null;
         this.typeAccount = typeAccount;
         this.dateAccount = dateAccount;
         this.cards = new ArrayList<>();
+    }
+
+    public Card getCard(TypeCard typeCard){
+        for (Card card : this.cards){
+            if(card.getTypeCard().equals(typeCard)){
+                return card;
+            }
+        }
+        return null;
     }
 
     public void addCard(Card card){

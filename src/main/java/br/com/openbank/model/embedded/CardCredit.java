@@ -1,5 +1,6 @@
 package br.com.openbank.model.embedded;
 
+import br.com.openbank.model.enums.TypeCard;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class CardCredit extends Card{
     private Double invoiceAmount;
 
     public CardCredit(Double limit){
-        super();
+        super(TypeCard.CREDIT);
         this.limit = limit;
         this.purchases = new ArrayList<>();
         this.dateDue = this.getDateAdd1Month();

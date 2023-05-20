@@ -1,5 +1,6 @@
 package br.com.openbank.model.embedded;
 
+import br.com.openbank.model.enums.TypeCard;
 import com.github.javafaker.CreditCardType;
 import com.github.javafaker.Faker;
 import lombok.Getter;
@@ -13,14 +14,16 @@ public abstract class Card {
     private String flag;
     private String password;
     private boolean active;
+    private TypeCard typeCard;
 
-    public Card(){
+    public Card(TypeCard typeCard){
         super();
         String flag = generateFlag();
         this.number = generateNumber(flag);
         this.flag = flag;
         this.password = generatePassword();
         this.active = true;
+        this.typeCard = typeCard;
     }
 
     private String generateFlag(){

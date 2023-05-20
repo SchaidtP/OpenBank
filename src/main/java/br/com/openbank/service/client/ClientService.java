@@ -6,8 +6,10 @@ import br.com.openbank.repository.IClientRepository;
 import br.com.openbank.service.client.request.ClientCreateRequest;
 import br.com.openbank.service.account.IAccountService;
 import br.com.openbank.service.client.request.ClientEditRequest;
+import br.com.openbank.service.client.response.GetClientResponse;
 import br.com.openbank.service.validate.cpf.ICpfValidateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,8 +52,46 @@ public class ClientService implements IClientService{
         throw new Exception("Customer already registered or invalid CPF");
     }
 
-    public void editClient(ClientEditRequest clientEditRequest) {
+    public void editClient(ClientEditRequest clientEditRequest) throws Exception {
+        var client = ((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
+        if(clientEditRequest.name != null && !clientEditRequest.name.equals("")){
+            client.setName(clientEditRequest.name);
+        }
+
+        if(clientEditRequest.street != null && !clientEditRequest.street.equals("")){
+            client.getAddress().setStreet(clientEditRequest.street);
+        }
+
+        if(clientEditRequest.number != null && clientEditRequest.number == 0){
+            client.getAddress().setNumber(clientEditRequest.number);
+        }
+
+        if(clientEditRequest.zipCode != null && !clientEditRequest.zipCode.equals("")){
+            client.getAddress().setZipCode(clientEditRequest.zipCode);
+        }
+
+        if(clientEditRequest.neighborhood != null && !clientEditRequest.neighborhood.equals("")){
+            client.getAddress().setNeighborhood(clientEditRequest.neighborhood);
+        }
+
+        if(clientEditRequest.city != null && !clientEditRequest.city.equals("")){
+            client.getAddress().setCity(clientEditRequest.city);
+        }
+
+        if(clientEditRequest.state != null && !clientEditRequest.state.equals("")){
+            client.getAddress().setState(clientEditRequest.state);
+        }
+
+        if(clientEditRequest.password != null && !clientEditRequest.password.equals("")){
+            client.getAddress().setStreet(clientEditRequest.password);
+        }
+
+        try{
+            iClientRepository.save(client);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     public Client findClientById(UUID idClient) {
@@ -62,6 +102,21 @@ public class ClientService implements IClientService{
         return iClientRepository.findClientByCpf(cpf).orElse(null);
     }
 
+    public GetClientResponse getClient() {
+        var client = ((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return new GetClientResponse(client.getId(), client.getCpf(), client.getName(), client.getTypeClient().toString(), client.getDateOfBirth(),
+                client.getAddress().getStreet(), client.getAddress().getNumber(), client.getAddress().getZipCode(), client.getAddress().getNeighborhood(), client.getAddress().getCity(), client.getAddress().getState());
+    }
+
+    public void deleteClient() throws Exception {
+        var client = ((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        try {
+            iAccountService.deleteAccount(client.getId());
+            iClientRepository.delete(client);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
     private boolean isOlderThan16(LocalDate dateOfBirth){
         LocalDate currentDate = LocalDate.now();
