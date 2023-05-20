@@ -6,12 +6,11 @@ import br.com.openbank.model.enums.TypeKeyPix;
 import br.com.openbank.service.account.IAccountService;
 import br.com.openbank.service.client.IClientService;
 import br.com.openbank.service.pix.request.PixTransferRequest;
+import br.com.openbank.service.pix.response.GetPixResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -72,5 +71,20 @@ public class PixService implements IPixService{
             throw new Exception("Invalid or inactive pix");
         }
 
+    }
+
+    public void deletePix() throws Exception {
+        Account account = iAccountService.findAccount();
+        try{
+            account.setPix(null);
+            iAccountService.saveAccount(account);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public GetPixResponse getPix() {
+        Account account = iAccountService.findAccount();
+        return new GetPixResponse(account.getPix().getIdAccount(), account.getPix().getTypeKeyPix(), account.getPix().getKey(), account.getPix().isActive());
     }
 }
