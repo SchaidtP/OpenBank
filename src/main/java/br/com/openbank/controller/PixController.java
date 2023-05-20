@@ -25,7 +25,7 @@ public class PixController {
         }
     }
 
-    @PatchMapping("/transferByPix")
+    @PatchMapping()
     public ResponseEntity<String> transferByPix(@RequestBody PixTransferRequest pixTransferRequest){
         try {
             iPixService.transferByPix(pixTransferRequest);
@@ -45,6 +45,7 @@ public class PixController {
         }
     }
 
+    @GetMapping()
     public ResponseEntity<GetPixResponse> getPix(){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(iPixService.getPix());

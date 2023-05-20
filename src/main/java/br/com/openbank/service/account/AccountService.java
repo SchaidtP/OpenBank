@@ -117,20 +117,22 @@ public class AccountService implements IAccountService{
 
     public void maintenanceFee() {
         List<Account> accounts = iAccountRepository.findAll();
-
         if (accounts != null){
             for (Account account : accounts){
-                if (account.getTypeAccount() == TypeAccount.CHAIN){
-                    account.setBalance(account.getBalance() - (account.getBalance()*0.45));
-                } else {
-                    account.setBalance(account.getBalance() - (account.getBalance()*0.03));
-                }
+                if(!account.getDateAccount().isBefore(LocalDate.now())){
+                    if (account.getTypeAccount() == TypeAccount.CHAIN){
+                        account.setBalance(account.getBalance() - (account.getBalance()*0.45));
+                    } else {
+                        account.setBalance(account.getBalance() - (account.getBalance()*0.03));
+                    }
 
-                try {
-                    account.setDateAccount(dateOneMonthLater());
-                    iAccountRepository.save(account);
-                } catch (Exception ignored){
+                    try {
+                        account.setDateAccount(dateOneMonthLater());
+                        iClientService.setTypeClient(account.getBalance());
+                        iAccountRepository.save(account);
+                    } catch (Exception ignored){
 
+                    }
                 }
             }
         }
@@ -148,6 +150,7 @@ public class AccountService implements IAccountService{
 
     public void saveAccount(Account account) throws Exception {
         try {
+            iClientService.setTypeClient(account.getBalance());
             iAccountRepository.save(account);
         } catch (Exception e){
             throw new Exception(e.getMessage());

@@ -4,6 +4,7 @@ import br.com.openbank.model.enums.TypeCard;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Getter @Setter
@@ -27,5 +28,14 @@ public class CardCredit extends Card{
         return calendar.getTime();
     }
 
+    public void addPurchase(Double value){
+        this.purchases.add(new Purchase(LocalDate.now(), value));
+    }
 
+    public void deletePurchases(){
+        for (Purchase purchase : this.purchases){
+            this.limit += purchase.getValue();
+        }
+        this.purchases = new ArrayList<>();
+    }
 }

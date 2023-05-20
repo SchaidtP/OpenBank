@@ -19,7 +19,7 @@ public class QuartzConfig {
     @Bean
     public Trigger myTrigger() {
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInMinutes(43830)
+                .withIntervalInHours(24)
                 .repeatForever();
 
         return TriggerBuilder.newTrigger()

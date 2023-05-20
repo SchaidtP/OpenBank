@@ -46,13 +46,19 @@ public class Account {
         this.cards.add(card);
     }
 
+    public void deleteCard(Card card){
+        this.cards.remove(card);
+    }
+
     public void editCardCredit(CardCredit cardCredit){
-        List<Card> lCard = new ArrayList<>();
-        for(Card card : this.cards){
-            if(card.getClass().getSimpleName().toLowerCase().contains("credit")){
-                lCard.add(cardCredit);
+        List<Card> cards = new ArrayList<>();
+        for(Card card: this.cards){
+            if(card.getTypeCard().equals(TypeCard.CREDIT)){
+                cards.add(cardCredit);
+            } else {
+                cards.add(card);
             }
         }
-        this.cards = lCard;
+        this.cards = cards;
     }
 }

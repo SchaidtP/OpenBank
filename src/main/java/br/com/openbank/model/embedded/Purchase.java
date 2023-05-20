@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter @Setter
 @AllArgsConstructor
 public class Purchase {
-    private Date date;
+    private LocalDate date;
     private Double value;
 }
